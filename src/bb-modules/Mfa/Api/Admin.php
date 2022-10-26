@@ -19,8 +19,9 @@
 namespace Box\Mod\MFA\Api;
 
 class Admin extends \Api_Abstract{
+
     public function generatNewSecret(){
-        new \Box_exception ($this->service->newSecret());
+        throw new \Box_Exception ($this->service->newSecret());
     }
 
 }

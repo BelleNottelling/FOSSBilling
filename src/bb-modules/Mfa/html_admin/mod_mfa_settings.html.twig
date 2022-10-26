@@ -31,7 +31,7 @@
 <form method="post" action="{{ 'api/admin/extension/config_save'|link }}" class="mainForm api-form" data-api-msg="{{ 'Configuration updated'|trans }}">
     <fieldset>
         <div class="rowElem noborder">
-            <label>{{ 'Enable IP blocking'|trans }}</label>
+            <label>{{ 'MFA Secret '|trans }}</label>
             <div class="formRight">
                 <input type="text" name="mfa_secret" value="{{ params.mfa_secret }}"/>
             </div>

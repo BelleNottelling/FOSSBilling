@@ -15,6 +15,7 @@
 namespace Box\Mod\MFA;
 
 use Box\InjectionAwareInterface;
+use RobThree\Auth\TwoFactorAuth;
 
 class Service implements InjectionAwareInterface{
     /**
@@ -22,7 +23,7 @@ class Service implements InjectionAwareInterface{
      */
     protected $di = null;
 
-    /**
+    /*
      * @param \Box_Di $di
      */
     public function setDi($di){
@@ -36,13 +37,23 @@ class Service implements InjectionAwareInterface{
         return $this->di;
     }
 
+    public function newMFA($appName = null){
+        if(is_null($appName)){
+            $systemService = $this->di['mod_service']('system');
+            $company = $systemService->getCompany();
+            $appName = $company['name'];
+        }
+        $mfa = new TwoFactorAuth($appName);
+        return $mfa;
+    }
+
     /**
      * Returns a new MFA secret key.
      *
      * @return string
      */
     public function newSecret(){
-        $mfa = $this->di['MFA'];
+        $mfa = $this->newMFA();
         return $mfa->createSecret();
     }
 
@@ -56,22 +67,22 @@ class Service implements InjectionAwareInterface{
     }
 
     public function getCode($secret){
-        $mfa = $this->di['MFA'];
+        $mfa = $this->newMFA();
         return $mfa->getCode();
     }
 
     public function verifyCode($secret, $code){
-        $mfa = $this->di['MFA'];
+        $mfa = $this->newMFA();
         return $mfa->verifyCode($secret, $code);
     }
 
     public function checkTime(){
-        $mfa = $this->di['MFA'];
+        $mfa = $this->newMFA();
         try {
             $mfa->ensureCorrectTime();
-            returns true;
-        } catch (RobThree\Auth\TwoFactorAuthException $ex) {
-            new \Box_exception ("warning: host time appears to be off" . $ex->getMessage());
+            return true;
+        } catch (\RobThree\Auth\TwoFactorAuthException $ex) {
+            throw new \Box_Exception ("warning: host time appears to be off" . $ex->getMessage());
         }
     }
 
