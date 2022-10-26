@@ -1,0 +1,46 @@
+{% extends request.ajax ? "layout_blank.html.twig" : "layout_default.html.twig" %}
+
+{% import "macro_functions.html.twig" as mf %}
+
+{% block meta_title %}{{ 'MFA settings'|trans }}{% endblock %}
+
+{% set active_menu = 'system' %}
+
+{% block breadcrumbs %}
+<ul>
+    <li class="firstB"><a href="{{ '/'|alink }}">{{ 'Home'|trans }}</a></li>
+    <li><a href="{{ 'system'|alink }}">{{ 'Settings'|trans }}</a></li>
+    <li class="lastB">{{ 'MFA settings'|trans }}</li>
+</ul>
+{% endblock %}
+
+
+{% block content %}
+
+<div class="widget">
+    <div class="head">
+        <h5 class="iCog">{{ 'MFA settings'|trans }}</h5>
+    </div>
+
+{% set params = admin.extension_config_get({ "ext": "mod_mfa" }) %}
+
+<form method="post" action="{{ 'api/admin/mfa/generatNewSecret'|link }}" class="mainForm api-form" data-api-msg="{{ 'Configuration updated'|trans }}">
+        <input type="submit" value="{{ 'Generate secret'|trans }}" class="greyishBtn submitForm" />
+</form>
+
+<form method="post" action="{{ 'api/admin/extension/config_save'|link }}" class="mainForm api-form" data-api-msg="{{ 'Configuration updated'|trans }}">
+    <fieldset>
+        <div class="rowElem noborder">
+            <label>{{ 'Enable IP blocking'|trans }}</label>
+            <div class="formRight">
+                <input type="text" name="mfa_secret" value="{{ params.mfa_secret }}"/>
+            </div>
+            <div class="fix"></div>
+        </div>
+
+        <input type="submit" value="{{ 'Update'|trans }}" class="greyishBtn submitForm" />
+        <input type="hidden" name="ext" value="mod_mfa" />
+    </fieldset>
+</form>
+</div>
+{% endblock %}

@@ -1,0 +1,4 @@
+{% if guest.extension_is_on({"mod":"mfa"}) %}
+{% set mfa = guest.mfa_enabled %}
+
+{% endif %}

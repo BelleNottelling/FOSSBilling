@@ -1,0 +1,13 @@
+{
+    "id":           "MFA",
+	"type":         "mod",
+    "name":         "Multifactor Authentication",
+    "description":  "Enables the use of the Multifactor Authentication to add additional security.",
+    "icon_url":      null,
+    "project_url":  "https://fossbillng.org/",
+    "homepage_url": "https://fossbillng.org/",
+    "author":       "FOSSBilling",
+    "author_url":   "https://fossbillng.org/",
+    "license":      "Free for commercial and non-commercial use (Apache License or GPL 2)",
+    "version":      "1.0.0"
+}

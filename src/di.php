@@ -727,4 +727,13 @@ $di['array_get'] = $di->protect(function (array $array, $key, $default = null) {
     return ('' === $result) ? null : $result;
 });
 
+$di['mfa'] = function ($appName = null) {
+    if(is_null($appName)){
+        $systemService = $this->di['mod_service']('system');
+        $company = $systemService->getCompany();
+        $appName = $company['name'];
+    }
+    return = new RobThree\Auth\TwoFactorAuth("$appName");
+};
+
 return $di;
