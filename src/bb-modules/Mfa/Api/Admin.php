@@ -24,4 +24,10 @@ class Admin extends \Api_Abstract{
         throw new \Box_Exception ($this->service->newSecret());
     }
 
+    public function validateCode($data){
+        $secret = $data['secret'];
+        $code = $data['code'];
+        throw new \Box_Exception ($this->service->verifyMFACode($secret, $code));
+    }
+
 }

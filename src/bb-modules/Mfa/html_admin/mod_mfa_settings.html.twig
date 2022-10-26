@@ -28,6 +28,28 @@
         <input type="submit" value="{{ 'Generate secret'|trans }}" class="greyishBtn submitForm" />
 </form>
 
+<form method="post" action="{{ 'api/admin/mfa/validateCode'|link }}" class="mainForm api-form" data-api-msg="{{ 'Configuration updated'|trans }}">
+    <fieldset>
+        <div class="rowElem noborder">
+            <label>{{ 'MFA Secret '|trans }}</label>
+            <div class="formRight">
+                <input type="text" name="secret" value="{{ params.mfa_secret }}"/>
+            </div>
+            <div class="fix"></div>
+        </div>
+
+        <div class="rowElem noborder">
+            <label>{{ 'MFA Code '|trans }}</label>
+            <div class="formRight">
+                <input type="text" name="code" value=" "/>
+            </div>
+            <div class="fix"></div>
+        </div>
+
+        <input type="submit" value="{{ 'Update'|trans }}" class="greyishBtn submitForm" />
+    </fieldset>
+</form>
+
 <form method="post" action="{{ 'api/admin/extension/config_save'|link }}" class="mainForm api-form" data-api-msg="{{ 'Configuration updated'|trans }}">
     <fieldset>
         <div class="rowElem noborder">

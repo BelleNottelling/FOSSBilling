@@ -71,7 +71,7 @@ class Service implements InjectionAwareInterface{
         return $mfa->getCode();
     }
 
-    public function verifyCode($secret, $code){
+    public function verifyMFACode($secret, $code){
         $mfa = $this->newMFA();
         return $mfa->verifyCode($secret, $code);
     }
