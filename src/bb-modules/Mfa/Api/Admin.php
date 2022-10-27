@@ -30,4 +30,7 @@ class Admin extends \Api_Abstract{
         throw new \Box_Exception ($this->service->verifyMFACode($secret, $code));
     }
 
+    public function validateTime(){
+        return $this->service->checkTime();
+    }
 }
