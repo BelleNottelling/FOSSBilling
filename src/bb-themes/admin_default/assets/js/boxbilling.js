@@ -5,6 +5,7 @@ var bb = {
       url: bb.restUrl(url),
       data: params,
       dataType: 'json',
+      timeout: 120000,
       error: function (jqXHR, textStatus, e) {
         boxbilling.message(e, 'error');
       },
@@ -27,6 +28,7 @@ var bb = {
       url: bb.restUrl(url),
       data: params,
       dataType: 'json',
+      timeout: 120000,
       error: function (jqXHR, textStatus, e) {
         boxbilling.message(e, 'error');
       },
