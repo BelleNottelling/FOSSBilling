@@ -18,10 +18,10 @@ jobs:
 
       - name: Install npm-check-updates
         run: npm install -g npm-check-updates
-        working-directory: ./src/modules/Wysiwyg
 
       - name: Apply any available updates.
         run: ncu -u
+        working-directory: ./src/modules/Wysiwyg
 
       - name: Create a Pull Request
         uses: peter-evans/create-pull-request@v4
