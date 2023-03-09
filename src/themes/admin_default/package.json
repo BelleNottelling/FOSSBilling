@@ -15,7 +15,7 @@
     "bootstrap-markdown": "^2.10.0",
     "flag-icons": "^6.6.6",
     "imask": "^6.4.3",
-    "jquery": "^3.6.3",
+    "jquery": "^3.6.4",
     "select2": "^4.0.13",
     "tom-select": "^2.2.2"
   }
