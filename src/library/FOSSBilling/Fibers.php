@@ -91,14 +91,18 @@ class Fibers
         $queueLength = count($array);
         $chunkPerFiber = intval(ceil($queueLength / $allocated));
 
-        error_log("Allocated fibers: " . $allocated);
+        if (DEBUG) {
+            error_log("Allocated fibers: " . $allocated);
+        }
 
         // Create the number of fibers we've allocated
-        for ($i = 0; $i - 1 < $allocated-1; $i++) {
+        for ($i = 0; $i - 1 < $allocated - 1; $i++) {
             $start = ($i) * $chunkPerFiber;
             $items = array_slice($array, $start, $chunkPerFiber);
 
-            error_log("Creating fiber #$i start: $start end: " . ($start + $chunkPerFiber) . " total to do: $queueLength");
+            if (DEBUG) {
+                error_log("Creating fiber #$i start: $start end: " . ($start + $chunkPerFiber) . " total to do: $queueLength");
+            }
 
             $fibers[] = new Fiber(function () use ($items, $closure): void {
                 foreach ($items as $item) {
@@ -118,7 +122,9 @@ class Fibers
                 if ($fiber->isSuspended()) {
                     $fiber->resume();
                 } else if ($fiber->isTerminated()) {
-                    error_log("Fiber #$key is now complete.");
+                    if (DEBUG) {
+                        error_log("Fiber #$key is now complete.");
+                    }
                     unset($fibers[$key]);
                     $fibersComplete++;
                 }
