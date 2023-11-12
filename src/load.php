@@ -253,6 +253,9 @@ if (!empty($config['info']['instance_id'])) {
     define('INSTANCE_ID', 'Unknown');
 }
 
+// TODO: THIS IS A PLACEHOLDER. IT NEEDS TO BE CONFIGURABLE
+define('FIBER_LIMIT', 8);
+
 // Initial setup and checks passed, now we setup our custom autoloader.
 include PATH_LIBRARY . DIRECTORY_SEPARATOR . 'FOSSBilling' . DIRECTORY_SEPARATOR . 'Autoloader.php';
 $loader = new FOSSBilling\AutoLoader();

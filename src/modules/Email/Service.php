@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright 2022-2023 FOSSBilling
  * Copyright 2011-2021 BoxBilling, Inc.
@@ -588,20 +589,20 @@ class Service implements \FOSSBilling\InjectionAwareInterface
         $query = 'ORDER BY created_at ASC';
         if ($sendPerCron) {
             $query .= ' LIMIT '  . intval($sendPerCron);
-            $mailQueue = $this->di['db']->findAll('mod_email_queue', $query);
-        } else {
-            $mailQueue = $this->di['db']->findAll('mod_email_queue', $query);
         }
 
-        foreach ($mailQueue as $email) {
+        $mailQueue = $this->di['db']->findAll('mod_email_queue', $query);
+        $emailService = $this;
+
+        \FOSSBilling\Fibers::fiberForEach($mailQueue, function ($email) use ($sent, $start, $time_limit, $emailService) {
             $mailModel = new \Model_ModEmailQueue();
             $mailModel->loadBean($email);
-            $this->_sendFromQueue($mailModel);
+            $emailService->_sendFromQueue($mailModel);
             ++$sent;
             if ($time_limit && time() - $start > $time_limit) {
-                break;
+                return;
             }
-        }
+        });
     }
 
     private function _sendFromQueue(\Model_ModEmailQueue $queue, bool $throw_exceptions = false)
