@@ -111,15 +111,13 @@ class Fibers
             });
         }
 
-        foreach ($fibers as $fiber) {
-            $fiber->start();
-        }
-
         $fibersComplete = 0;
         while ($fibersComplete < $allocated) {
             usleep($pollRate);
             foreach ($fibers as $key => $fiber) {
-                if ($fiber->isSuspended()) {
+                if (!$fiber->isStarted()) {
+                    $fiber->start();
+                } else if ($fiber->isSuspended()) {
                     $fiber->resume();
                 } else if ($fiber->isTerminated()) {
                     if (DEBUG) {
