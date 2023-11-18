@@ -794,20 +794,38 @@ $di['password'] = fn () => new Box_Password();
  *
  * @return \Box_Translate The new translation object that was just created.
  */
-$di['translate'] = $di->protect(function ($textDomain = '') use ($di) {
-    $tr = new Box_Translate();
+$di['translate'] = $di->protect(function () use ($di) {
+    $locale = FOSSBilling\i18n::getActiveLocale();
+    global $translator;
+    $translator = FOSSBilling\Translate::setupFunctions($di, $locale);
 
-    if (!empty($textDomain)) {
-        $tr->setDomain($textDomain);
+    if (!function_exists('__trans')) {
+        function __trans(string $msgid, array $values = null)
+        {
+            global $translator;
+            $translated = $translator->gettext($msgid);
+
+            if (is_array($values)) {
+                $translated = strtr($translated, $values);
+            }
+
+            return $translated;
+        }
     }
 
-    $locale = \FOSSBilling\i18n::getActiveLocale();
+    if (!function_exists('__pluralTrans')) {
+        function __pluralTrans(string $msgid, string $msgidPlural, int $number, array $values = null)
+        {
+            global $translator;
+            $translated = $translator->ngettext($msgid, $msgidPlural, $number);
 
-    $tr->setDi($di);
-    $tr->setLocale($locale);
-    $tr->setup();
+            if (is_array($values)) {
+                $translated = strtr($translated, $values);
+            }
 
-    return $tr;
+            return $translated;
+        }
+    }
 });
 
 /*
