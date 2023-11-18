@@ -27,7 +27,6 @@ final class TranslateCache implements CacheInterface
         $this->cachePool = $cache;
         $this->parser = $parser;
         $this->locale = $locale;
-        $this->prependPrefix($this->loadKey);
         $this->parseIntoCache();
     }
 
@@ -38,7 +37,6 @@ final class TranslateCache implements CacheInterface
         $cacheItem = $this->cachePool->getItem($msgid);
 
         if (!$cacheItem->isHit()) {
-            error_log("Not a hit: " . $msgid);
             return $org;
         }
 
@@ -64,8 +62,9 @@ final class TranslateCache implements CacheInterface
         foreach ($translations as $msgid => $msgstr) {
             $cacheItem = $this->cachePool->getItem($msgid);
             $cacheItem->set($msgstr);
-            $this->cachePool->save($cacheItem);
+            $this->cachePool->saveDeferred($cacheItem);
         }
+        $this->cachePool->commit();
     }
 
     public function parseIntoCache()
