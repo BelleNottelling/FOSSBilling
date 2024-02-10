@@ -57,6 +57,7 @@ class Service
         $this->di['events_manager']->fire(['event' => 'onBeforeAdminCronRun']);
 
         $this->_exec($api, 'invoice_batch_pay_with_credits');
+        $this->_exec($api, 'invoice_transaction_process_all');
         $this->_exec($api, 'invoice_batch_activate_paid');
         $this->_exec($api, 'invoice_batch_send_reminders');
         $this->_exec($api, 'invoice_batch_generate');
