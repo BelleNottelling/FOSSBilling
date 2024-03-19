@@ -1,6 +1,7 @@
 const fs = require("node:fs");
 const Encore = require('@symfony/webpack-encore');
 const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
+const ImageMinimizerPlugin = require("image-minimizer-webpack-plugin");
 
 if (!Encore.isRuntimeEnvironmentConfigured()) {
   Encore.configureRuntimeEnvironment(process.env.NODE_ENV || 'dev');
@@ -68,6 +69,55 @@ Encore
         }
       },
       'svgo-loader'
+    ]
+  })
+  .addLoader({
+    test: /\.svg$/,
+    use: [
+      {
+        loader: ImageMinimizerPlugin.loader,
+        options: {
+          minimizer: {
+            implementation: ImageMinimizerPlugin.svgoMinify,
+            options: {
+              encodeOptions: {
+                plugins: [
+                  "preset-default",
+                ],
+              },
+            },
+          },
+        }
+      }
+    ]
+  })
+  .addLoader({
+    //test: /\.(jpe?g|png|gif|webp|avif)$/i,
+    test: /\.(jpe?g|png|webp|avif)$/i,
+    use: [
+      {
+        loader: ImageMinimizerPlugin.loader,
+        options: {
+          minimizer: {
+            implementation: ImageMinimizerPlugin.sharpMinify,
+            options: {
+              encodeOptions: {
+                jpeg: {
+                  quality: 100,
+                },
+                webp: {
+                  lossless: true,
+                },
+                avif: {
+                  lossless: true,
+                },
+                png: {},
+                gif: {},
+              },
+            },
+          },
+        }
+      }
     ]
   })
   .addPlugin(new SpriteLoaderPlugin({ plainSprite: true }))
